@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthQR - Digital Health Records</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        .doctor-card:hover {
+            transform: translateY(-5px);
+            transition: transform 0.3s ease;
+        }
+        #qrcode img {
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-sky-100 to-blue-200 min-h-screen">
+    <nav class="p-4 glass-effect sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="bi bi-heart-pulse-fill text-blue-600 text-2xl"></i>
+                <span class="text-xl font-bold text-blue-600">HealthQR</span>
+            </div>
+            <div class="hidden md:flex space-x-6">
+                <a href="#home" class="text-gray-700 hover:text-blue-600">Home</a>
+                <a href="#qr-generator" class="text-gray-700 hover:text-blue-600">Generate QR</a>
+                <a href="#appointments" class="text-gray-700 hover:text-blue-600">Appointments</a>
+                <a href="#doctors" class="text-gray-700 hover:text-blue-600">Doctors</a>
+            </div>
+            <div class="flex space-x-4">
+                <button onclick="showModal('login')" class="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700">Login</button>
+                <button onclick="showModal('signup')" class="px-4 py-2 rounded-lg border border-blue-600 text-blue-600 hover:bg-blue-50">Sign Up</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8">
+        <section id="home" class="text-center py-12">
+            <h1 class="text-4xl md:text-6xl font-bold text-gray-800 mb-6">Your Digital Health Record Solution</h1>
+            <p class="text-xl text-gray-600 mb-8">Generate QR codes for instant access to your medical history</p>
+            <div class="flex justify-center gap-4">
+                <button onclick="scrollToSection('qr-generator')" class="px-8 py-3 bg-blue-600 text-white rounded-lg text-lg hover:bg-blue-700">
+                    Generate QR <i class="bi bi-qr-code"></i>
+                </button>
+                <button onclick="scrollToSection('appointments')" class="px-8 py-3 bg-green-600 text-white rounded-lg text-lg hover:bg-green-700">
+                    Book Appointment <i class="bi bi-calendar-check"></i>
+                </button>
+            </div>
+        </section>
+
+        <section id="qr-generator" class="py-12">
+            <h2 class="text-3xl font-bold text-center mb-12">Generate Your Health QR</h2>
+            <div class="max-w-md mx-auto glass-effect p-6 rounded-xl">
+                <form id="healthForm" class="space-y-4">
+                    <input type="text" placeholder="Full Name" class="w-full p-3 rounded-lg border" required>
+                    <input type="date" class="w-full p-3 rounded-lg border" required>
+                    <select class="w-full p-3 rounded-lg border" required>
+                        <option value="">Select Blood Group</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                    </select>
+                    <textarea placeholder="Medical History" class="w-full p-3 rounded-lg border h-32" required></textarea>
+                    <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700">
+                        Generate QR Code
+                    </button>
+                </form>
+                <div id="qrcode" class="mt-6 text-center"></div>
+            </div>
+        </section>
+
+        <section id="appointments" class="py-12">
+            <h2 class="text-3xl font-bold text-center mb-12">Book an Appointment</h2>
+            <div class="max-w-md mx-auto glass-effect p-6 rounded-xl">
+                <form id="appointmentForm" class="space-y-4">
+                    <select class="w-full p-3 rounded-lg border" required>
+                        <option value="">Select Doctor Type</option>
+                        <option value="pediatrician">Pediatrician</option>
+                        <option value="ophthalmologist">Ophthalmologist</option>
+                        <option value="surgeon">Surgeon</option>
+                    </select>
+                    <input type="date" class="w-full p-3 rounded-lg border" required>
+                    <select class="w-full p-3 rounded-lg border" required>
+                        <option value="">Select Time Slot</option>
+                        <option value="09:00">09:00 AM</option>
+                        <option value="10:00">10:00 AM</option>
+                        <option value="11:00">11:00 AM</option>
+                        <option value="14:00">02:00 PM</option>
+                        <option value="15:00">03:00 PM</option>
+                        <option value="16:00">04:00 PM</option>
+                    </select>
+                    <button type="submit" class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700">
+                        Book Appointment
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <section id="doctors" class="py-12">
+            <h2 class="text-3xl font-bold text-center mb-12">Our Specialists</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="doctor-card p-6 rounded-xl glass-effect text-center">
+                    <i class="bi bi-person-heart text-5xl text-blue-600"></i>
+                    <h3 class="text-xl font-bold mt-4">Dr. Sarah Parker</h3>
+                    <p class="text-blue-600">Pediatrician</p>
+                    <p class="text-gray-600 mt-2">Specialized in child healthcare with 10+ years experience</p>
+                    <button onclick="scrollToSection('appointments')" class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                        Book Now
+                    </button>
+                </div>
+                <div class="doctor-card p-6 rounded-xl glass-effect text-center">
+                    <i class="bi bi-eye text-5xl text-blue-600"></i>
+                    <h3 class="text-xl font-bold mt-4">Dr. Michael Chen</h3>
+                    <p class="text-blue-600">Ophthalmologist</p>
+                    <p class="text-gray-600 mt-2">Expert in eye care and surgery with 15+ years experience</p>
+                    <button onclick="scrollToSection('appointments')" class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                        Book Now
+                    </button>
+                </div>
+                <div class="doctor-card p-6 rounded-xl glass-effect text-center">
+                    <i class="bi bi-hospital text-5xl text-blue-600"></i>
+                    <h3 class="text-xl font-bold mt-4">Dr. James Wilson</h3>
+                    <p class="text-blue-600">Surgeon</p>
+                    <p class="text-gray-600 mt-2">Specialized in general surgery with 12+ years experience</p>
+                    <button onclick="scrollToSection('appointments')" class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                        Book Now
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal -->
+    <div id="modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50">
+        <div class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md">
+            <div class="bg-white rounded-lg p-8">
+                <div id="loginForm" class="hidden">
+                    <h2 class="text-2xl font-bold mb-6">Login</h2>
+                    <form onsubmit="handleLogin(event)" class="space-y-4">
+                        <input type="email" placeholder="Email" class="w-full p-3 border rounded" required>
+                        <input type="password" placeholder="Password" class="w-full p-3 border rounded" required>
+                        <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded hover:bg-blue-700">Login</button>
+                    </form>
+                </div>
+                <div id="signupForm" class="hidden">
+                    <h2 class="text-2xl font-bold mb-6">Sign Up</h2>
+                    <form onsubmit="handleSignup(event)" class="space-y-4">
+                        <input type="text" placeholder="Full Name" class="w-full p-3 border rounded" required>
+                        <input type="email" placeholder="Email" class="w-full p-3 border rounded" required>
+                        <input type="password" placeholder="Password" class="w-full p-3 border rounded" required>
+                        <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded hover:bg-blue-700">Sign Up</button>
+                    </form>
+                </div>
+                <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showModal(type) {
+            document.getElementById('modal').classList.remove('hidden');
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('signupForm').classList.add('hidden');
+            document.getElementById(`${type}Form`).classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.add('hidden');
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            alert('Login successful!');
+            closeModal();
+        }
+
+        function handleSignup(e) {
+            e.preventDefault();
+            alert('Account created successfully!');
+            closeModal();
+        }
+
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        document.getElementById('modal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        document.getElementById('healthForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const qrData = Array.from(formData.entries()).map(([key, value]) => `${key}: ${value}`).join('\n');
+            
+            const qrcodeDiv = document.getElementById('qrcode');
+            qrcodeDiv.innerHTML = '';
+            new QRCode(qrcodeDiv, {
+                text: qrData,
+                width: 128,
+                height: 128
+            });
+        });
+
+        document.getElementById('appointmentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Appointment booked successfully!');
+        });
+    </script>
+<script>document.body.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); return }, { passive: false })</script>
+	</body>
+</html>
